@@ -28,7 +28,7 @@ HAL_StatusTypeDef spi_write(uint8_t regAddr, uint8_t *pData)
   HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 0);
 
   // send reg addr and data to write into
-  ret = HAL_SPI_Transmit(&hspi2, sendData, 2, 20);
+  ret = HAL_SPI_Transmit(&hspi2, pData, 2, 20);
   if(ret != HAL_OK)
   {
   	HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
@@ -46,7 +46,7 @@ HAL_StatusTypeDef spi_write(uint8_t regAddr, uint8_t *pData)
 * @param  pData pointer to variable to store device register data
 * @retval HAL status
 **/
-HAL_StatusTypeDef spi_read(uint8_t regAddr, uint8_t *pData)
+HAL_StatusTypeDef spi_read(uint8_t *regAddr, uint8_t *pData)
 {
   HAL_StatusTypeDef ret;
   // MSB of address is 1 to tell device we want to read data from it
@@ -78,7 +78,7 @@ HAL_StatusTypeDef spi_read(uint8_t regAddr, uint8_t *pData)
   /** 2. way (my preferred): send reg address and read with one function
    *	Size of Rx and Tx register is same -> length of whole transmission
   **/
-  ret = HAL_SPI_TransmitReceive(&hspi2, senddata, receivedata, 2, 50);
+  ret = HAL_SPI_TransmitReceive(&hspi2, regAddr, pData, 2, 50);
   if(ret != HAL_OK)
   {
   		HAL_GPIO_WritePin(SPI2_CS_GPIO_Port, SPI2_CS_Pin, 1);
