@@ -107,6 +107,8 @@ void InitSPI(void)
 {
 	uint8_t BUF = 0;
 	uint16_t SPIEN = 0;
+	CS_Disable();
+	HAL_Delay(20);
 	CS_Enable();
 	HAL_SPI_Transmit(&hspi2, &BUF, 2, 1000);
 	CS_Disable();
